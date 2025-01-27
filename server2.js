@@ -9,11 +9,11 @@ app.use(express.static("public")); // Serve static files from the "public" direc
 
 // ------------------GET ROUTES-------------------
 app.get("/", function (req, res) {
-    res.sendFile(__dirname + "/public/index.html");
+    res.sendFile(__dirname + "/index.html");
 });
 
 app.get("/chart", function (req, res) {
-    res.sendFile(__dirname + "/public/chart.html");
+    res.sendFile(__dirname + "/chart.html");
 });
 
 // ------------------API ROUTES-------------------
