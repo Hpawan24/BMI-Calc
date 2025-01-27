@@ -1,58 +1,92 @@
-const express = require("express");
+const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
-const bodyParser = require("body-parser");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// --------------STATIC FILES---------------
-app.use(express.static("public")); // Serve static files from the "public" directory
-
-// ------------------GET ROUTES-------------------
-app.get("/", function (req, res) {
-    res.sendFile(__dirname + "/index.html");
+app.get('/', (req, res) => {
+    res.send(`
+        <!doctype html>
+        <html lang="en">
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>BMI Calculator</title>
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet">
+        </head>
+        <body class="text-center">
+            <main class="form-signin w-100 m-auto">
+                <form action="/" method="post">
+                    <img class="mb-4" src="https://cdn.iconscout.com/icon/premium/png-512-thumb/bmi-calculator-2751460-2283491.png?f=avif&w=256" alt="" width="auto" height="100">
+                    <div class="form-floating mb-3">
+                        <input type="number" step="any" autocomplete="off" class="form-control" name="weight" placeholder="Enter Weight" required>
+                        <label>Weight (Kg)</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="number" step="any" autocomplete="off" class="form-control" name="height" placeholder="Enter Height" required>
+                        <label>Height (m)</label>
+                    </div>
+                    <button class="w-100 btn btn-lg btn-warning" type="submit">Calculate BMI!</button>
+                </form>
+                <a href="/chart">
+                    <button class="w-100 btn btn-outline-success mt-3">BMI Chart</button>
+                </a>
+            </main>
+        </body>
+        </html>
+    `);
 });
 
-app.get("/chart", function (req, res) {
-    res.sendFile(__dirname + "/chart.html");
-});
-
-// ------------------API ROUTES-------------------
-// BMI calculation API (RESTful endpoint)
-app.post("/", function (req, res) {
+app.post('/', (req, res) => {
     const weight = parseFloat(req.body.weight);
-    let height = parseFloat(req.body.height);
+    const height = parseFloat(req.body.height);
 
-    // Convert height to meters if necessary
-    if (height > 3 && height < 10) {
-        height = height / 3.281; // Convert from feet to meters
-    } else if (height >= 10) {
-        height = height / 100; // Convert from cm to meters
+    if (!weight || !height || height <= 0) {
+        res.status(400).send("Invalid input. Please ensure both weight and height are positive numbers.");
+        return;
     }
 
-    // Calculate BMI
     const BMI = (weight / (height * height)).toFixed(2);
-
-    // Determine BMI category
     let category = "";
+
     if (BMI < 18.5) {
         category = "Underweight";
-    } else if (BMI >= 18.5 && BMI <= 24.9) {
+    } else if (BMI >= 18.5 && BMI < 24.9) {
         category = "Normal weight";
-    } else if (BMI >= 25 && BMI <= 29.9) {
+    } else if (BMI >= 25 && BMI < 29.9) {
         category = "Overweight";
     } else {
         category = "Obese";
     }
 
-    // Return BMI and category as JSON
-    res.status(200).json({
-        bmi: BMI,
-        category: category,
-    });
+    res.send(`
+        <!doctype html>
+        <html lang="en">
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <title>BMI Result</title>
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet">
+        </head>
+        <body class="text-center">
+            <main class="form-signin w-100 m-auto">
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    Your Calculated BMI is <strong>${BMI}</strong> (${category}).
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <a href="/">
+                    <button class="w-100 btn btn-lg btn-warning mt-3">« Back to Calculator</button>
+                </a>
+            </main>
+        </body>
+        </html>
+    `);
 });
 
-// -----------------LISTEN------------------------
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, function () {
-    console.log(`Server is running on port ${PORT}`);
+app.get('/chart', (req, res) => {
+    res.sendFile(__dirname + '/chart.html');
+});
+
+app.listen(3000, () => {
+    console.log('Server is running on port 3000');
 });
