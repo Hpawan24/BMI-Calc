@@ -13,11 +13,32 @@ app.get('/', (req, res) => {
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <title>BMI Calculator</title>
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet">
+            <style>
+                body {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;
+                    background-color: #f8f9fa;
+                }
+                .form-container {
+                    max-width: 360px;
+                    padding: 15px;
+                    border-radius: 10px;
+                    background: white;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                }
+                .form-container img {
+                    max-width: 100%;
+                    height: auto;
+                }
+            </style>
         </head>
-        <body class="text-center">
-            <main class="form-signin w-100 m-auto">
+        <body>
+            <div class="form-container">
                 <form action="/" method="post">
-                    <img class="mb-4" src="https://cdn.iconscout.com/icon/premium/png-512-thumb/bmi-calculator-2751460-2283491.png?f=avif&w=256" alt="" width="auto" height="100">
+                    <img class="mb-4" src="https://cdn.iconscout.com/icon/premium/png-512-thumb/bmi-calculator-2751460-2283491.png?f=avif&w=256" alt="BMI Calculator" width="128" height="128">
+                    <h1 class="h3 mb-3 fw-normal text-center">BMI Calculator</h1>
                     <div class="form-floating mb-3">
                         <input type="number" step="any" autocomplete="off" class="form-control" name="weight" placeholder="Enter Weight" required>
                         <label>Weight (Kg)</label>
@@ -26,12 +47,12 @@ app.get('/', (req, res) => {
                         <input type="number" step="any" autocomplete="off" class="form-control" name="height" placeholder="Enter Height" required>
                         <label>Height (m)</label>
                     </div>
-                    <button class="w-100 btn btn-lg btn-warning" type="submit">Calculate BMI!</button>
+                    <button class="w-100 btn btn-lg btn-primary" type="submit">Calculate BMI</button>
                 </form>
                 <a href="/chart">
-                    <button class="w-100 btn btn-outline-success mt-3">BMI Chart</button>
+                    <button class="w-100 btn btn-outline-secondary mt-3">View BMI Chart</button>
                 </a>
-            </main>
+            </div>
         </body>
         </html>
     `);
@@ -67,17 +88,32 @@ app.post('/', (req, res) => {
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <title>BMI Result</title>
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet">
+            <style>
+                body {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;
+                    background-color: #f8f9fa;
+                }
+                .result-container {
+                    max-width: 360px;
+                    padding: 15px;
+                    border-radius: 10px;
+                    background: white;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                    text-align: center;
+                }
+            </style>
         </head>
-        <body class="text-center">
-            <main class="form-signin w-100 m-auto">
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    Your Calculated BMI is <strong>${BMI}</strong> (${category}).
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
+        <body>
+            <div class="result-container">
+                <h1 class="h3 mb-3 fw-normal">Your BMI Result</h1>
+                <p class="mb-3">Your Calculated BMI is <strong>${BMI}</strong> (${category}).</p>
                 <a href="/">
-                    <button class="w-100 btn btn-lg btn-warning mt-3">« Back to Calculator</button>
+                    <button class="w-100 btn btn-lg btn-primary">Back to Calculator</button>
                 </a>
-            </main>
+            </div>
         </body>
         </html>
     `);
