@@ -18,7 +18,7 @@ app.get("/chart", function (req, res) {
 
 // ------------------API ROUTES-------------------
 // BMI calculation API (RESTful endpoint)
-app.post("/api/v1/bmi", function (req, res) {
+app.post("/", function (req, res) {
     const weight = parseFloat(req.body.weight);
     let height = parseFloat(req.body.height);
 
